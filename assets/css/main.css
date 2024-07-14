@@ -1,0 +1,14 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+root {
+    --black:  black;
+    --white: #fafafa
+}
+
+main {
+    margin: 0;
+    padding: 0;
+    background: white;
+}
