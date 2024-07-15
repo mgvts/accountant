@@ -7,7 +7,7 @@ export default defineNuxtComponent({
 </script>
 <!--https://ui.nuxt.com/components/table#column-header-->
 <template>
-  <UTable>
+  <UTable :items="gettingItems">
 
   </UTable>
 </template>
