@@ -2,11 +2,12 @@
 
 import dotenv from 'dotenv'
 dotenv.config({ path: `.env.${process.env.NODE_ENV}` })
-console.log(process.env.BASE_URL)
 
 export default defineNuxtConfig({
     app: {
-        baseURL: process.env.BASE_URL || '/' // dynamically set baseURL
+        baseURL: process.env.NODE_ENV == 'production'
+            ? '/accountant'
+            : '/'
     },
     compatibilityDate: '2024-07-14',
     devtools: {enabled: true},
