@@ -2,6 +2,8 @@
 
 import dotenv from 'dotenv'
 dotenv.config({ path: `.env.${process.env.NODE_ENV}` })
+console.log(process.env.BASE_URL)
+
 export default defineNuxtConfig({
     app: {
         baseURL: process.env.BASE_URL || '/' // dynamically set baseURL
