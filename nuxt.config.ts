@@ -9,6 +9,6 @@ export default defineNuxtConfig({
             autoprefixer: {},
         },
     },
-    css: ['~/src/assets/css/main.css'],
+    css: ['~/assets/css/main.css'],
     modules: ["@nuxt/ui", '@nuxtjs/tailwindcss']
 })
