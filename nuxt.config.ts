@@ -11,7 +11,9 @@ export default defineNuxtConfig({
     },
     compatibilityDate: '2024-07-14',
     devtools: {enabled: true},
-
+    plugins: [
+        '@/plugins/dexie.ts'
+    ],
     postcss: {
         plugins: {
             tailwindcss: {},

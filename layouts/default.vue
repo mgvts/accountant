@@ -7,9 +7,12 @@ export default defineNuxtComponent({
 </script>
 
 <template>
-<div>
-  here will be account page
-</div>
+  <div>
+    <my-header/>
+    <div>
+      <slot/>
+    </div>
+  </div>
 </template>
 
 <style scoped>

@@ -15,14 +15,7 @@ export default defineNuxtComponent({
 </script>
 
 <template>
-  <my-header/>
   <my-table/>
-<!--  <div>-->
-<!--    <UHorizontalNavigation :links="links" class="border-b border-gray-200 dark:border-gray-800"/>-->
-<!--    <div>-->
-<!--<themePicker/>-->
-<!--    </div>-->
-<!--  </div>-->
 </template>
 
 <style scoped>

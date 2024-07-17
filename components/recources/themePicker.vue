@@ -32,7 +32,6 @@ export default defineNuxtComponent({
         :icon="getIcon"
         @click="toggleColorMode"
         variant="ghost"
-        :color='$colorMode.preference'
     />
   </div>
 </template>

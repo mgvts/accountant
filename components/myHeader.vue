@@ -14,8 +14,8 @@ export default defineNuxtComponent({
         icon: 'i-heroicons-home'
       },
         {
-          label: 'Account',
-          to: '/account',
+          label: 'User',
+          to: '/user',
         },
       ],
     }
@@ -33,7 +33,6 @@ export default defineNuxtComponent({
     </div>
     <div class="flex flex-row">
       <theme-picker/>
-      <github-icon/>
     </div>
   </header>
 
