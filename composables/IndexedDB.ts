@@ -29,15 +29,18 @@ export class IDBService {
     }
 
     public async putCategory(name: string, description: string = '') {
-        return await this.put('category', { name, description });
+        return await this.put('category', {name, description});
     }
 
-    public async putPurchase(name: string, value: { value: number; currency: string; }, User: string, category: string[]) {
-        return await this.put('purchase', { name, value, User, category });
+    public async putPurchase(name: string, value: {
+        value: number;
+        currency: string;
+    }, User: string, category: string[]) {
+        return await this.put('purchase', {name, value, User, category});
     }
 
     public async putUser(name: string) {
-        return await this.put('user', { name });
+        return await this.put('user', {name});
     }
 
     public async getCategory(id: number) {

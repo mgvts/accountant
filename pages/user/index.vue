@@ -19,11 +19,6 @@ export default defineNuxtComponent({
       currentUser: null
     }
   },
-  computed: {
-    async userName() {
-      return await this.$dexie.getAllUsers()
-    }
-  },
   methods: {
     createUser() {
       this.createUserModal = true
