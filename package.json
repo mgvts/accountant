@@ -13,16 +13,21 @@
   "dependencies": {
     "@nuxt/ui": "^2.17.0",
     "@nuxtjs/dotenv": "^1.4.2",
+    "@primevue/themes": "^4.0.0",
     "dexie": "^4.0.8",
     "nuxt": "^3.12.3",
+    "primeicons": "^7.0.0",
+    "primevue": "^4.0.0",
     "vue": "latest",
     "yup": "^1.4.0"
   },
   "devDependencies": {
     "@nuxtjs/color-mode": "^3.4.2",
     "@nuxtjs/tailwindcss": "npm:@nuxtjs/tailwindcss@nightly",
+    "@primevue/nuxt-module": "^4.0.0",
     "autoprefixer": "^10.4.19",
     "postcss": "^8.4.39",
+    "sass": "^1.77.8",
     "tailwindcss": "^3.4.4"
   }
 }

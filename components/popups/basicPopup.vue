@@ -12,11 +12,14 @@ export default defineNuxtComponent({
 </script>
 
 <template>
-  <UModal v-model="isOpen">
+  <Dialog modal  v-model:visible="isOpen" :style="{ width: '25rem' }">
+    <template v-slot:header>
+      <slot name="header"/>
+    </template>
     <div>
       <slot/>
     </div>
-  </UModal>
+  </Dialog>
 </template>
 
 <style scoped>

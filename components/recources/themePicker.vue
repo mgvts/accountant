@@ -4,23 +4,19 @@ import {defineNuxtComponent} from 'nuxt/app'
 export default defineNuxtComponent({
   name: "themePicker",
   computed: {
-    getIcon() {
-      return this.$colorMode.preference == 'light' ? this.sunIcon : this.moonIcon
-    }
   },
   data() {
     return {
-      sunIcon: 'i-heroicons-sun',
-      moonIcon: 'i-heroicons-moon'
+      getIcon: 'pi pi-sun',
     }
   },
   methods: {
     toggleColorMode() {
-      if (this.$colorMode.preference == 'light') {
-        this.$colorMode.preference = 'dark'
-      }else {
-        this.$colorMode.preference = 'light'
-      }
+      const root = document.getElementsByTagName('html')[0];
+
+      root.classList.toggle('p-dark');
+      this.getIcon = this.getIcon === 'pi pi-moon' ? 'pi pi-sun' : 'pi pi-moon';
+
     }
   }
 })
@@ -28,10 +24,10 @@ export default defineNuxtComponent({
 
 <template>
   <div>
-    <UButton
+    <Button
+        :color
         :icon="getIcon"
         @click="toggleColorMode"
-        variant="ghost"
     />
   </div>
 </template>

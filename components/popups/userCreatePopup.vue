@@ -5,7 +5,7 @@ const {$dexie} = useNuxtApp()
 
 <script lang="ts">
 import {defineNuxtComponent, useNuxtApp} from 'nuxt/app'
-import BasicPopup from "~/components/popups/basicPopup.vue";
+import BasicPopup from "@/components/popups/basicPopup.vue";
 import {object, string} from "yup";
 
 export default defineNuxtComponent({
@@ -22,7 +22,7 @@ export default defineNuxtComponent({
       }),
       state: {
         name: undefined
-      }
+      },
     }
   },
   watch: {
@@ -39,6 +39,12 @@ export default defineNuxtComponent({
       await this.$dexie.putUser(this.state.name)
       this.loading = false
       this.$emit('update:modelValue', false)
+      this.$toast.add(
+          {
+            severity: 'info',
+            detail: `User ${this.state.name} successfully added`,
+            life: 3000
+          })
     },
     cleanData() {
       this.state.name = undefined
@@ -49,30 +55,24 @@ export default defineNuxtComponent({
 
 <template>
   <basic-popup v-model="isOpen">
-    <UCard>
-      <template v-slot:header>
-        Create User
-      </template>
-      <template v-slot:default>
-        <div>
-          <UForm :schema="schema" @submit="createUser" :state="state">
-            <UFormGroup name="name">
-              <UInput
-                  v-model="state.name"
-                  placeholder="Enter User name"
-                  :loading="loading"
-              />
-            </UFormGroup>
-            <UButton
-                :loading="loading"
-                type="submit"
-            >
-              Create
-            </UButton>
-          </UForm>
-        </div>
-      </template>
-    </UCard>
+    <template v-slot:header>
+      Create User
+    </template>
+    <div class="flex justify-between">
+      <InputText
+          class="w-9/12"
+          v-model="state.name"
+          type="text"
+          placeholder="Enter User name"
+      />
+      <Button
+          :loading="loading"
+          type="submit"
+          @click="createUser"
+      >
+        Create
+      </Button>
+    </div>
   </basic-popup>
 </template>
 

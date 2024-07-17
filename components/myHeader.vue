@@ -6,16 +6,19 @@ import GithubIcon from "~/components/recources/githubIcon.vue";
 export default defineNuxtComponent({
   name: "myHeader",
   components: {GithubIcon, themePicker},
-  data(){
+  data() {
     return {
       links: [{
         label: 'Home',
-        to: '/',
-        icon: 'i-heroicons-home'
+        route: '/',
+        // command: () => this.$router.push('/'),
+        icon: 'pi pi-home'
       },
         {
           label: 'User',
-          to: '/user',
+          icon: 'pi pi-user',
+          route: '/user',
+          // command: () => this.$router.push('/user'),
         },
       ],
     }
@@ -29,7 +32,18 @@ export default defineNuxtComponent({
       <logo/>
     </div>
     <div class="w-auto">
-      <UHorizontalNavigation :links="links"/>
+      <Menubar :model="links" class="p-0">
+        <template v-slot:item="{item, props}">
+          <div class="bg-green-500 rounded-md" style="margin: -8px -12px">
+            <router-link v-if="item.route" v-slot="{ href, navigate }" :to="item.route" custom>
+              <a v-ripple :href="href" v-bind="props.action" @click="navigate">
+                <span :class="item.icon"/>
+                <span class="ml-2">{{ item.label }}</span>
+              </a>
+            </router-link>
+          </div>
+        </template>
+      </Menubar>
     </div>
     <div class="flex flex-row">
       <theme-picker/>
