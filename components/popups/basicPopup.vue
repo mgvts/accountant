@@ -7,12 +7,16 @@ import {defineNuxtComponent} from 'nuxt/app'
 
 export default defineNuxtComponent({
   name: "basicPopup",
-
+  methods: {
+    handleClick(e) {
+      console.log(e)
+    }
+  }
 })
 </script>
 
 <template>
-  <Dialog modal  v-model:visible="isOpen" :style="{ width: '25rem' }">
+  <Dialog modal v-model:visible="isOpen" :style="{ width: '25rem' }">
     <template v-slot:header>
       <slot name="header"/>
     </template>

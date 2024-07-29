@@ -1,6 +1,5 @@
 <script setup lang="ts">
 import BasicPopup from "~/components/popups/basicPopup.vue";
-import {categories} from "@vueuse/metadata";
 
 const isOpen = defineModel<Boolean>({default: false})
 const {$dexie} = useNuxtApp()
@@ -11,7 +10,6 @@ import {defineNuxtComponent} from 'nuxt/app'
 import {object, string} from "yup";
 import {IDBService} from "~/composables/IndexedDB";
 import type {Category, User} from "~/composables/types";
-import {categories} from "@vueuse/metadata";
 
 export default defineNuxtComponent({
   name: "createPurchasePopup",
@@ -61,7 +59,7 @@ export default defineNuxtComponent({
       const {value, currency, name, user, categories} = this.state
       if (!value || !currency || !name || !user ) return
       await (this.$dexie as IDBService).putPurchase(`${name}`,
-          value, currency, user.id, categories.map(c => c.id))
+          value, currency, user.id, this.categories.map(c => c.id))
       this.$emit('update:modelValue', false)
       this.$toast.add(
           {
