@@ -20,10 +20,10 @@ export default defineNuxtComponent({
   computed: {
     model: {
       get() {
-        console.log(this.modelValue)
         return this.modelValue
       },
       set(val: any) {
+        this.cleanData();
         return this.$emit('update:modelValue', val)
       }
     }
@@ -49,14 +49,18 @@ export default defineNuxtComponent({
       const { description, name } = this.state
       if (!name) return
       await this.createCategory(name, description)
-      this.$emit('update:modelValue', false)
+      this.model = false
       this.$toast.add({
         severity: 'info',
         detail: `Category ${name} successfully added`,
         life: 3000
       })
       this.loading = false
-    }
+    },
+    cleanData() {
+      this.state.name = undefined;
+      this.state.description = undefined;
+    },
   }
 })
 </script>

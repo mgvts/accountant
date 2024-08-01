@@ -6,10 +6,13 @@ import CreateCategoryPopup from "~/components/popups/createCategoryPopup.vue";
 import myHeader from "~/components/myHeader.vue";
 import {IDBService} from "~/composables/IndexedDB";
 import type {Purchase} from "~/types";
+import TableNavigation from "~/components/table/tableNavigation.vue";
 
 export default defineNuxtComponent({
   name: "",
-  components: {CreateCategoryPopup, CreatePurchasePopup, MyTable, myHeader},
+  components: {TableNavigation, CreateCategoryPopup, CreatePurchasePopup, MyTable, myHeader},
+  setup(){
+  },
   data() {
     return {
       addPurchasePopup: false,
@@ -46,21 +49,22 @@ export default defineNuxtComponent({
 </script>
 
 <template>
-  <div class="p-10">
-    <div class=" flex justify-between pb-5">
-      <div class="text-3xl">
-        Purchases
-      </div>
-      <div class="flex flex-row gap-2">
-        <Button @click="addPurchase">Add Purchase</Button>
-        <Button @click="addCategory">Add Category</Button>
-      </div>
-      <Button icon="pi pi-refresh"/>
-    </div>
-    <my-table :purchases="purchases"/>
+  <div>
+    <table-navigation/>
   </div>
-  <create-category-popup v-model="addCategoryPopup" @update:modelValue=""/>
-  <create-purchase-popup v-model="addPurchasePopup" @update:modelValue="fetchPurchases()"/>
+<!--  <div class="p-10">-->
+<!--    <div class=" flex justify-between pb-5">-->
+<!--      <div class="text-3xl">-->
+<!--        Purchases-->
+<!--      </div>-->
+<!--      <div class="flex flex-row gap-2">-->
+<!--        <Button @click="addPurchase">Add Purchase</Button>-->
+<!--        <Button @click="addCategory">Add Category</Button>-->
+<!--      </div>-->
+<!--      <Button icon="pi pi-refresh"/>-->
+<!--    </div>-->
+<!--    <my-table :purchases="purchases"/>-->
+<!--  </div>-->
 </template>
 
 <style scoped>

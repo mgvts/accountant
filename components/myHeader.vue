@@ -47,7 +47,7 @@ export default defineNuxtComponent({
 </script>
 
 <template>
-  <header class="border-b px-10 py-3 flex items-center justify-between gap-3">
+  <header class="border-b px-10 py-3 flex items-center justify-between gap-3 h-20">
     <div class="items-center">
       <logo/>
     </div>

@@ -3,29 +3,28 @@ import {defineNuxtComponent} from 'nuxt/app'
 
 export default defineNuxtComponent({
   name: "",
-
+  data() {
+    return {
+      pages: [
+        {title: 'All purchases', to: '/table/purchases' },
+        {title: 'User page', to: '/user' },
+        {title: 'About this', to: '/about' },
+      ]
+    }
+  }
 })
 </script>
 
 <template>
   <div class="container flex justify-center items-center">
-    <ul class="flex flex-col gap-5">
-      <li>
-        <NuxtLink to="/table">table</NuxtLink>
-      </li>
-      <li>
-        <NuxtLink to="/">empty</NuxtLink>
-      </li>
-      <li>
-        <NuxtLink to="/user">user</NuxtLink>
-      </li>
-      <li>
-        <NuxtLink to="/login">login</NuxtLink>
-      </li>
-    </ul>
+    <div class="flex flex-col justify-center gap-4 mt-10 text-center text-xl">
+      <NuxtLink v-for="page of pages" :to="page.to" class="group transition duration-1000">
+        {{ page.title }}
+        <span class="mt-0.5 block max-w-0 group-hover:max-w-full transition-all duration-500 h-0.5 bg-green-400"></span>
+      </NuxtLink>
+    </div>
   </div>
 </template>
 
-<style scoped>
-
+<style scoped lang="postcss">
 </style>

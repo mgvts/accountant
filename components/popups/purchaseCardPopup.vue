@@ -1,131 +1,103 @@
-<script setup lang="ts">
-import type {Purchase} from '~/composables/types';
-
-const isOpen = defineModel<Boolean>({default: false});
-const purchase = defineModel<Purchase | null>('purchase', {default: null});
-</script>
-
 <script lang="ts">
-import {useNuxtApp} from '#app';
 import BasicPopup from "~/components/popups/basicPopup.vue";
-import type {Category, User} from '~/composables/types';
-import type {IDBService} from "~/composables/IndexedDB";
+import type {Purchase} from "~/types";
+import type {PropType} from "vue";
 
 export default defineNuxtComponent({
   name: 'PurchaseCardPopup',
   components: {BasicPopup},
-  data() {
-    return {
-      users: [] as User[],
-      categories: [] as Category[],
-      loading: false,
-      state: {
-        name: this.purchase?.name || '',
-        user: this.purchase?.user || null,
-        value: this.purchase?.value || 0,
-        currency: this.purchase?.currency || '₽',
-        categories: this.purchase?.categories || []
-      }
-    }
+  setup() {
+    const {editPurchase} = usePurchases()
+    const {categories, fetchCategories} = useCategories()
+    return {editPurchase, categories, fetchCategories}
+  },
+  props: {
+    //seems it may be collapsed
+    modelValue: {
+      type: Boolean,
+      default: false
+    },
+    purchase: {
+      type: Object as PropType<Purchase>,
+      default: null,
+      nullable: true
+    },
   },
   computed: {
-    $dexie() {
-      return useNuxtApp().$dexie as IDBService
+    model: {
+      get() {
+        return this.modelValue
+      },
+      set(val: boolean) {
+        this.$emit("update:modelValue", val)
+      }
     },
-    async getUser(): Promise<User> {
-      console.log(this.purchase)
-      return await this.$dexie.getUser(this.purchase.userId)
+    currentPurchase: {
+      get(): Purchase {
+        return this.purchase
+      },
+      set(newPurchase: Purchase): void {
+        this.$emit('update:purchase', newPurchase)
+      }
     }
   },
   methods: {
-    async fetchUsers() {
-      this.users = await this.$dexie.getAllUsers();
-    },
-    async fetchCategories() {
-      this.categories = await this.$dexie.getAllCategories();
-    },
-    async cleanData() {
-      this.state = {
-        name: '',
-        user: await this.getUser,
-        value: 0,
-        currency: '₽',
-        categories: []
-      };
-    },
     async savePurchase() {
-      this.loading = true;
-      const {value, currency, name, user, categories} = this.state;
-      if (!value || !currency || !name || !user) return;
-      await this.$dexie.putPurchase(
-          name,
-          value,
-          currency,
-          user.id,
-          categories.map(c => c.id)
-      );
-      this.isOpen = false;
-      this.$toast.add({
-        severity: 'info',
-        detail: `Purchase ${this.state.name} successfully added`,
-        life: 3000
-      });
-      this.loading = false;
-    }
-  },
-  watch: {
-    purchase(newPurchase) {
-      if (newPurchase) {
-        this.state = {
-          name: newPurchase.name,
-          user: newPurchase.user,
-          value: newPurchase.value,
-          currency: newPurchase.currency,
-          categories: newPurchase.categories
-        };
-      } else {
-        this.cleanData();
+      if (!this.currentPurchase && !this.currentPurchase?.id) return
+      if (this.validate()) {
+        console.log({
+          ...this.currentPurchase,
+          categoryIds: this.currentPurchase.categories.map(c => c.id)
+        })
+        await this.editPurchase(this.currentPurchase.id, {
+          ...this.currentPurchase,
+          categoryIds: this.currentPurchase.categories.map(c => c.id)
+        })
+        this.model = false
+        this.$toast.add({
+          severity: 'info',
+          detail: `Purchase ${this.currentPurchase.name} successfully edited`,
+          life: 3000,
+        });
       }
+    },
+    validate() {
+      const p = this.currentPurchase
+      return p.name && p.name.length > 4 && p.value != null
     }
   },
-  async mounted() {
-    this.state.user = await this.getUser
+  async created() {
+    await this.fetchCategories()
   }
 });
 </script>
 
 <template>
-  <basic-popup v-model="isOpen">
+  <basic-popup v-model="model">
     <template v-slot:header>
       Edit Purchase
     </template>
     <div class="flex justify-between flex-col gap-5">
       <InputText
           class="w-9/12"
-          v-model="state.name"
+          v-model="currentPurchase.name"
           type="text"
           placeholder="Enter purchase name"
       />
       <div class="flex flex-row">
-        <InputNumber v-model="state.value" placeholder="enter value"/>
-        <Select v-model="state.currency" :options="['$', '₽']"/>
+        <InputNumber v-model="currentPurchase.value" placeholder="Enter value"/>
+        <Select v-model="currentPurchase.currency" :options="['$', '₽']"/>
       </div>
-      <Select
-          v-model="state.user"
-          :options="users"
-          @click="fetchUsers"
-          optionLabel="name"
-          placeholder="Select User"
-      />
-      <Select
-          v-model="state.categories"
+      <multi-select
+          v-model="currentPurchase.categories"
           :options="categories"
           @click="fetchCategories"
+          filter
           optionLabel="name"
           placeholder="Select Categories"
+          display="chip"
       />
       <Button
-          :loading="loading"
           type="submit"
           @click="savePurchase"
       >

@@ -14,7 +14,7 @@ export default function () {
     const provider = new GoogleAuthProvider()
     provider.setCustomParameters({prompt: 'select_account'});
 
-    const getCurrentUser = () => {
+    const getCurrentUser = (): Promise<User | null> => {
         return new Promise((resolve, reject) => {
             const unsubscribe = onAuthStateChanged($firebaseAuth, (user) => {
                 unsubscribe(); // unsubscribe immediately since we only need it once

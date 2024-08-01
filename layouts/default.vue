@@ -8,10 +8,11 @@ export default defineNuxtComponent({
 
 <template>
   <div>
-    <my-header/>
-    <div>
+    <my-header />
+    <div class="min-h-screen">
       <slot/>
     </div>
+    <my-footer />
   </div>
 </template>
 

@@ -9,7 +9,7 @@ import {defineNuxtComponent} from 'nuxt/app'
 import type {User} from "~/composables/types";
 import {useNuxtApp} from "#app";
 import {IDBService} from "~/composables/IndexedDB";
-import userCard from "~/pages/user/UserCard.vue";
+import userCard from "~/components/user/UserCard.vue";
 
 type userIndex = 'first' | 'last'
 
@@ -54,29 +54,9 @@ export default defineNuxtComponent({
 </script>
 
 <template>
-  <div>
-    <div class="px-14 pt-5 flex flex-row">
-      <div>
-        <div v-if="users?.length == 0">
-          no users
-        </div>
-        <div v-else>
-          <Listbox :options="users" optionLabel="name" v-model="currentUser">
-            <template v-slot:option="{option}">
-              <div :style="{maxWidth: '15rem', minWidth: '10rem'}">
-                {{ option.name }}
-              </div>
-            </template>
-          </Listbox>
-        </div>
-        <Button @click="createUser">Create User</Button>
-      </div>
-      <div class="container size-96 mx-auto">
-        <user-card :user="currentUser"/>
-      </div>
-    </div>
+  <div class="flex justify-center items-center w-full">
+    <user-card/>
   </div>
-  <user-create-popup v-model="createUserModal" @update:modelValue="fetchUsers('last')"/>
 </template>
 
 <style scoped>
