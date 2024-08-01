@@ -6,6 +6,10 @@ import GithubIcon from "~/components/recources/githubIcon.vue";
 export default defineNuxtComponent({
   name: "myHeader",
   components: {GithubIcon, themePicker},
+  setup() {
+    const {user, logout} = useFirebaseAuth()
+    return {user, logout}
+  },
   data() {
     return {
       links: [{
@@ -22,12 +26,28 @@ export default defineNuxtComponent({
         },
       ],
     }
+  },
+  computed: {
+    getSignIcon(): string {
+      return this.user ? 'pi pi-sign-out' : 'pi pi-sign-in'
+    },
+    getSignTitle(): string {
+      return this.user ? 'logout' : 'login'
+    }
+  },
+  methods: {
+    async signAction() {
+      if (this.user) {
+        return await this.logout()
+      }
+      await this.$router.push('/login')
+    }
   }
 })
 </script>
 
 <template>
-  <header class="border-b px-10 py-3 flex items-center justify-between gap-3">
+  <header class="border-b px-10 py-3 flex items-center justify-between gap-3 h-20">
     <div class="items-center">
       <logo/>
     </div>
@@ -45,8 +65,9 @@ export default defineNuxtComponent({
         </template>
       </Menubar>
     </div>
-    <div class="flex flex-row">
+    <div class="flex flex-row gap-2">
       <theme-picker/>
+      <Button :icon="getSignIcon" @click="signAction" :title="getSignTitle"/>
     </div>
   </header>
 

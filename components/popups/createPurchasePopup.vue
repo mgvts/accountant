@@ -1,82 +1,82 @@
-<script setup lang="ts">
-import BasicPopup from "~/components/popups/basicPopup.vue";
-import {categories} from "@vueuse/metadata";
-
-const isOpen = defineModel<Boolean>({default: false})
-const {$dexie} = useNuxtApp()
-</script>
-
 <script lang="ts">
-import {defineNuxtComponent} from 'nuxt/app'
-import {object, string} from "yup";
-import {IDBService} from "~/composables/IndexedDB";
-import type {Category, User} from "~/composables/types";
-import {categories} from "@vueuse/metadata";
+import {defineNuxtComponent} from 'nuxt/app';
+import {object, string, number} from 'yup';
+import type {Category, User} from '@/types';
+import usePurchases from '~/composables/usePurchases';
+import BasicPopup from "~/components/popups/basicPopup.vue";
 
 export default defineNuxtComponent({
-  name: "createPurchasePopup",
+  name: 'CreatePurchasePopup',
+  components: {BasicPopup},
+  setup() {
+    const {createPurchase, fetchPurchases} = usePurchases()
+    const {categories, fetchCategories} = useCategories()
+    return {createPurchase, fetchPurchases, categories, fetchCategories}
+  },
+  props: {
+    modelValue: {
+      type: Boolean,
+      default: false
+    }
+  },
   data() {
     return {
       loading: false,
-      users: [] as User[],
-      categories: [] as Category[],
       schema: object({
-        name: string()
-            .min(4, 'name must be at least 4 characters')
-            .max(20, 'name must be at max 20 characters')
-            .required('this field must be filled'),
-
+        name: string().min(4, 'Name must be at least 4 characters')
+            .max(20, 'Name must be at max 20 characters')
+            .required('This field must be filled'),
+        value: number().required('This field must be filled'),
+        currency: string().required('This field must be filled'),
       }),
       state: {
-        name: undefined as undefined | string,
-        user: undefined as undefined | User,
-        value: undefined as undefined | number,
+        name: '' as string,
+        value: null as null | number,
         currency: '₽',
-        categories: [] as Category[]
+        categories: [] as Category[],
       },
-    }
+    };
   },
-  watch: {
-    modelValue(value) {
-      if (value == false) {
-        this.cleanData()
+  computed: {
+    model: {
+      get() {
+        return this.modelValue
+      },
+      set(val: boolean) {
+        this.cleanData();
+        console.log('update')
+        this.$emit('update:modelValue', val);
       }
     }
   },
   methods: {
-    async fetchUsers() {
-      this.users = await (this.$dexie as IDBService).getAllUsers()
-    },
-    async fetchCategories() {
-      this.categories = await (this.$dexie as IDBService).getAllCategories()
-    },
     cleanData() {
-      this.state.name = undefined
-      this.state.user = undefined
-      this.state.value = undefined
-      this.state.categories = []
+      this.state.name = '';
+      this.state.value = null;
+      this.state.categories = [];
     },
-    async createPurchase() {
-      this.loading = true
-      const {value, currency, name, user, categories} = this.state
-      if (!value || !currency || !name || !user ) return
-      await (this.$dexie as IDBService).putPurchase(`${name}`,
-          value, currency, user.id, categories.map(c => c.id))
-      this.$emit('update:modelValue', false)
-      this.$toast.add(
-          {
-            severity: 'info',
-            detail: `Purchase ${this.state.name} successfully added`,
-            life: 3000
-          })
-      this.loading = false
-    }
-  },
-})
+    async create() {
+      this.loading = true;
+      const {name, value, currency, categories} = this.state;
+      console.log({name, value, currency, categories})
+      if (!value) return
+      await this.createPurchase({
+        name, value, currency, categoryIds: categories.map(c => c.id)
+      })
+      this.model = false
+      this.$toast.add({
+        severity: 'info',
+        detail: `Purchase ${name} successfully added`,
+        life: 3000,
+      });
+      this.loading = false;
+    },
+  }
+});
 </script>
 
 <template>
-  <basic-popup v-model="isOpen">
+  <basic-popup v-model="model">
     <template v-slot:header>
       Add Purchase
     </template>
@@ -88,27 +88,22 @@ export default defineNuxtComponent({
           placeholder="Enter purchase name"
       />
       <div class="flex flex-row">
-        <InputNumber v-model="state.value" placeholder="enter value"/>
+        <InputNumber v-model="state.value" placeholder="Enter value"/>
         <Select v-model="state.currency" :options="['$', '₽']"/>
       </div>
-      <Select
-          v-model="state.user"
-          :options="users"
-          @click="fetchUsers"
-          optionLabel="name"
-          placeholder="Select User"
-      />
-      <Select
+      <multi-select
           v-model="state.categories"
           :options="categories"
           @click="fetchCategories"
+          filter
           optionLabel="name"
           placeholder="Select Categories"
+          display="chip"
       />
       <Button
           :loading="loading"
           type="submit"
-          @click="createPurchase"
+          @click="create"
       >
         Create
       </Button>
@@ -117,5 +112,4 @@ export default defineNuxtComponent({
 </template>
 
 <style scoped>
-
 </style>
