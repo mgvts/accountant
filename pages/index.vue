@@ -16,7 +16,7 @@ export default defineNuxtComponent({
 </script>
 
 <template>
-  <div class="container flex justify-center items-center">
+  <div class="container mx-auto flex justify-center items-center">
     <div class="flex flex-col justify-center gap-4 mt-10 text-center text-xl">
       <NuxtLink v-for="page of pages" :to="page.to" class="group transition duration-1000">
         {{ page.title }}
