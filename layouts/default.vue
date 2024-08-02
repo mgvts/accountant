@@ -9,7 +9,7 @@ export default defineNuxtComponent({
 <template>
   <div>
     <my-header />
-    <div class="min-h-screen">
+    <div style="min-height: 100vh">
       <slot/>
     </div>
     <my-footer />
