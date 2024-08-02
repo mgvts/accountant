@@ -8,7 +8,7 @@ export default defineNuxtComponent({
       pages: [
         {title: 'All purchases', to: '/table/purchases' },
         {title: 'User page', to: '/user' },
-        {title: 'About this', to: '/about' },
+        {title: 'About Us', to: '/about' },
       ]
     }
   }
