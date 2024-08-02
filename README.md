@@ -10,8 +10,10 @@ This project serves as a training ground for developing skills in web developmen
 
 
 ### Stack:
-1. [Nuxt3](https://nuxt.com/)
-2. UI:
+1. Main
+   1. [Nuxt3](https://nuxt.com/)
+   2. [OptionsApi + ts](https://vuejs.org/guide/typescript/options-api.html#typescript-with-options-api)
+3. UI:
     1. [tailwind](https://tailwindcss.com/)
     2. [PrimeVue](https://primevue.org/)
 4. Auth: [@firebase/auth](https://firebase.google.com/products/auth)
