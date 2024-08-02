@@ -51,14 +51,15 @@ export default defineNuxtComponent({
     </template>
     <template v-slot:content>
       <div class="flex flex-row items-start gap-5">
-        <div>
-          <img :src="user?.photoURL" style="width: 96px; height: 96px;"/>
+        <div class="w-24 h-24 outline outline-gray-400 flex items-center justify-center">
+          <img v-if="user?.photoURL" :src="user?.photoURL" />
+          <div v-else class=" ">No photo</div>
         </div>
         <div class="">
           <div>
-            <span class="font-bold">Name: </span>{{ user?.displayName }}
+            <span class="font-bold">Name: </span>{{ user?.displayName||'guest' }}
           </div>
-          <div>
+          <div v-if="user?.email">
             <span class="font-bold">Email: </span>{{ user?.email }}
           </div>
         </div>
