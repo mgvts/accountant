@@ -1,75 +1,21 @@
-# Nuxt 3 Minimal Starter
+# Online Accountant
 
-Look at the [Nuxt 3 documentation](https://nuxt.com/docs/getting-started/introduction) to learn more.
+[githubPages](https://mgvts.github.io/accountant/)
 
-## Setup
+## About
 
-Make sure to install the dependencies:
 
-```bash
-# npm
-npm install
+This project serves as a training ground for developing skills in web development and working with various libraries. It features functionality for creating and managing purchases, along with categories to help filter and organize items. The project also includes authentication and database storage capabilities.
 
-# pnpm
-pnpm install
 
-# yarn
-yarn install
 
-# bun
-bun install
-```
+### Stack:
+1. [Nuxt3](https://nuxt.com/)
+2. UI:
+    1. [tailwind](https://tailwindcss.com/)
+    2. [PrimeVue](https://primevue.org/)
+4. Auth: [@firebase/auth](https://firebase.google.com/products/auth)
+5. data:
+    1. [nuxtStore](https://nuxt.com/docs/getting-started/state-management)
+    2. [firebaseStore](https://firebase.google.com/docs/storage)
 
-## Development Server
-
-Start the development server on `http://localhost:3000`:
-
-```bash
-# npm
-npm run dev
-
-# pnpm
-pnpm run dev
-
-# yarn
-yarn dev
-
-# bun
-bun run dev
-```
-
-## Production
-
-Build the application for production:
-
-```bash
-# npm
-npm run build
-
-# pnpm
-pnpm run build
-
-# yarn
-yarn build
-
-# bun
-bun run build
-```
-
-Locally preview production build:
-
-```bash
-# npm
-npm run preview
-
-# pnpm
-pnpm run preview
-
-# yarn
-yarn preview
-
-# bun
-bun run preview
-```
-
-Check out the [deployment documentation](https://nuxt.com/docs/getting-started/deployment) for more information.
